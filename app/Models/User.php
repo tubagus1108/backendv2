@@ -30,6 +30,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'otp',
     ];
 
     /**
@@ -40,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function admin_relation()
+    {
+        return $this->belongsTo(User::class,'admin_approve_1','id');
+    }
+    public function superadmin_relation()
+    {
+        return $this->belongsTo(User::class,'admin_approve_2','id');
+    }
 }

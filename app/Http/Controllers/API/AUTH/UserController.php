@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\AdaremitMail;
 use App\Mail\RejectedMail;
+use App\Models\LogVerification;
 use App\Models\Voucher;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -137,7 +139,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validated = Validator::make($request->all(),[
-            'type_user' => 'required|integer|in:1,2',
+            'type_user' => 'required|integer|in:1,2,3,4',
             'user_hp' => 'required',
             'email' => 'required|email|unique:users,email,',
             'password' => 'required|min:5',
@@ -363,6 +365,141 @@ class UserController extends Controller
         // }else{
         //     return response()->json(['error' => false, 'message' => $dataarray]);
         // }
+    }
+    public function approveAdmin(Request $request,$user_id)
+    {
+        $validated = Validator::make($request->all(),[
+            'approve_1' => 'required',
+        ]);
+        if($validated->fails())
+        {
+            return response()->json(['error' => true,'message' => $validated->errors()],400);
+        }
+        $check_admin = User::where('id',Auth::guard('admin-api')->user()->id)->get();
+        // if(!$check_admin)
+        //     return response()->json(['error' => true,'messsage' => 'Super admin not have access api'],401);
+        $data = User::firstWhere('id',$user_id)->where('type_user',1)->where('type_user',2)->get();
+        $carbon_date = Carbon::now('Asia/Jakarta');
+        $description = 'User rejected by admin';
+        $description2 = 'User approve by admin';
+        if($data){
+            $data = User::find($user_id);
+            $data->approve_1 = $request->approve_1;
+            $data->admin_approve_1 = $check_admin[0]->id;
+            $data->approvedate_1 = $carbon_date;
+            LogVerification::create([
+                'user_id' => $user_id,
+                'description' => $description2,
+            ]);
+            $data->save();
+            if($request->approve_1 == 'Reject'){
+                LogVerification::create([
+                    'user_id' => $user_id,
+                    'description' => $description,
+                ]);
+            }
+            if($request->approve_1 == 'Reject')
+            {
+                return response()->json(['error' => false, 'message' => 'succes admin rejected user', 'data' => $data],200);
+
+            }else{
+                return response()->json(['error' => false, 'message' => 'succes admin approve user', 'data' => $data],200);
+            }
+        }
+        else{
+            return response()->json(['error' => true, 'message' => 'NotFound data'],404);
+        }
+    }
+    public function approveSuperAdmin(Request $request,$user_id)
+    {
+        $validated = Validator::make($request->all(),[
+            'approve_2' => 'required',
+        ]);
+        if($validated->fails())
+        {
+            return response()->json(['error' => true,'message' => $validated->errors()],400);
+        }
+        $check_admin = User::where('id',Auth::guard('admin-api')->user()->id)->get();
+        $data = User::firstWhere('id',$user_id)->where('type_user',1)->where('type_user',2)->get();
+        $carbon_date = Carbon::now('Asia/Jakarta');
+        $description = 'User rejected by superadmin';
+        $description2 = 'User approve by superadmin';
+        $status_usr = "Your ID Verification Rejected please contact customer service";
+        $status_usr1 = "Verification passed";
+        if($data){
+            $data = User::find($user_id);
+            $data->approve_2 = $request->approve_2;
+            $data->admin_approve_2 = $check_admin[0]->id;
+            $data->approvedate_2 = $carbon_date;
+            $data->user_status = $status_usr1;
+            LogVerification::create([
+                'user_id' => $user_id,
+                'description' => $description2,
+            ]);
+            $data->save();
+            if($request->approve_2 == 'Reject'){
+                LogVerification::create([
+                    'user_id' => $user_id,
+                    'description' => $description,
+                ]);
+                $details = [
+                    'title' => 'We are sory your accout rejected',
+                    'url' => 'adaremit.co.id',
+                    'full_name' => $data->first_name . ' ' . $data->last_name,
+                ];
+                Mail::to($data->email)->send(new RejectedMail($details));
+                $data = User::find($user_id);
+                $data->approve_1 = NULL;
+                $data->approve_2 = NULL;
+                $data->user_status =$status_usr;
+                $data->save();
+            }
+            if($request->approve_2 == 'Reject')
+            {
+                return response()->json(['error' => false, 'message' => 'succes superadmin rejected user', 'data' => $data],200);
+
+            }else{
+                return response()->json(['error' => false, 'message' => 'succes superadmin approve user', 'data' => $data],200);
+            }
+        }
+        else{
+            return response()->json(['error' => true, 'message' => 'NotFound data'],404);
+        }
+    }
+    public function getApproveadmin()
+    {
+        $data = User::where('admin_approve_1',NULL)->where('admin_approve_2',NULL)->where('type_user',1)->orWhere('type_user',2)->get();
+        if($data)
+            return response()->json(['error' => false,'message' => 'success get aprrove admin','data' => $data],200);
+        return response()->json(['error' => true,'message' => 'failed get aprrove admin','data' => $data],400);
+    }
+    public function getApprovesuperadmin()
+    {
+        $data = User::where('admin_approve_1','<>',NULL)->where('admin_approve_2',NULL)->where('type_user',1)->orWhere('type_user',2)->with(array('admin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_admin_name"));
+        }))->with(array('superadmin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_super_admin_name"));
+        }))->get();
+        if($data)
+            return response()->json(['error'=>false,'message' => 'success get data approve superadmin','data' => $data],200);
+        return response()->json(['error' => true, 'message' => 'failed get data approve superadmin','data' => $data],400);
+    }
+    public function getUserKYC()
+    {
+        $data = User::where('type_user',1)->orWhere('type_user',2)->with(array('admin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_admin_name"));
+        }))->get();
+        if($data)
+            return response()->json(['error'=>false,'message' => 'success get data kyc ','data' => $data],200);
+        return response()->json(['error' => true, 'message' => 'failed get data kyc','data' => $data],400);
+    }
+    public function getUserApprove($startDate,$endDate)
+    {
+
+    }
+    public function getUserData($startDate,$endDate)
+    {
+
     }
     protected function genereteCode()
     {

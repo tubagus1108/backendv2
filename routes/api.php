@@ -87,6 +87,13 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
     });
     Route::prefix('user')->group(function(){
         Route::post('create-user',[UserController::class,'registerByadmin']);
+        Route::post('approve_1/{user_id}',[UserController::class,'approveAdmin']);
+        Route::post('approve_2/{user_id}',[UserController::class,'approveSuperAdmin']);
+        Route::get('approve_1',[UserController::class,'getApproveadmin']);
+        Route::get('approve_2',[UserController::class,'getApprovesuperadmin']);
+        Route::get('user-kyc',[UserController::class,'getUserKYC']);
+        Route::get('usersapprove/{startDate}/{endDate}',[UserController::class,'getUserApprove']);
+        Route::get('usersdata/{startDate}/{endDate}',[UserController::class,'getUserData']);
     });
 });
 Route::middleware(['auth:api-user','api_user','cors','json.response'])->group(function(){

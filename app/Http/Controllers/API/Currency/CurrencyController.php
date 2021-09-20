@@ -35,7 +35,7 @@ class CurrencyController extends Controller
             $data->save();
             return response()->json(['error' => false, 'message' => 'succes update data', 'data' => $data],200);
         } else {
-            return response()->json(['error' => false, 'message' => 'NotFound data', 'data' => $data],404);
+            return response()->json(['error' => true, 'message' => 'NotFound data', 'data' => $data],404);
         }
     }
 }
