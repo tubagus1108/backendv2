@@ -15,7 +15,6 @@ class CreateVendorKursManualsTable extends Migration
     {
         Schema::create('vendor_kurs_manual', function (Blueprint $table) {
             $table->id();
-            $table->string('vendor_name')->nullable();
             $table->string('rate_type')->nullable();
             $table->double('buy')->nullable();
             $table->double('sell')->nullable();

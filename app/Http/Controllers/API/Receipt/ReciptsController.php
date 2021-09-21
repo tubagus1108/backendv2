@@ -36,7 +36,7 @@ class ReciptsController extends Controller
         $validated = Validator::make($request->all(),[
             'first_name' => 'required',
             'last_name' => 'required',
-            'des_country' => 'required',
+            'vendor_manual_id' => 'required'
         ]);
         if($validated->fails())
         {
@@ -56,7 +56,8 @@ class ReciptsController extends Controller
                     'id_group' => $request->id_group,
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
-                    'des_country' => $request->des_country,
+                    'type_receipt' => $request->type_receipt,
+                    'vendor_manual_id' => $request->vendor_manual_id,
                     'service' => $request->service,
                     'acc_number' => $request->acc_number,
                     'id_type' => $request->id_type,

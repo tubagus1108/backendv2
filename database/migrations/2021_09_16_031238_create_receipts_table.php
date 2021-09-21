@@ -18,7 +18,8 @@ class CreateReceiptsTable extends Migration
             $table->integer('id_group')->nullable();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('des_country');
+            $table->integer('type_receipt')->nullable();
+            $table->integer('vendor_manual_id')->nullable();
             $table->string('service')->nullable();
             $table->string('acc_number')->nullable();
             $table->string('id_type')->nullable();

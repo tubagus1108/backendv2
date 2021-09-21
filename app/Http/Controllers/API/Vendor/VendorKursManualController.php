@@ -13,7 +13,6 @@ class VendorKursManualController extends Controller
     public function addVendorkurs(Request $request)
     {
         $validated = Validator::make($request->all(),[
-            'vendor_name' => 'required',
             'buy' => 'required',
             'sell' => 'required',
             'customer_fee' => 'required',
@@ -32,6 +31,13 @@ class VendorKursManualController extends Controller
         $data = VendorKursManual::where('deleted_at',null)->with('currency_relation')->with('currencyto_relation')->get();
         if($data)
             return response()->json(['error' => false,'message' => 'success get data vendor manual','data' => $data],200);
+        return response()->json(['error' => true,'message' => 'failed get data vendor manual'],400);
+    }
+    public function getKursManualID($id)
+    {
+        $data = VendorKursManual::with('currency_relation')->with('currencyto_relation')->find($id);
+        if($data)
+            return response()->json(['error' => false,'message' => 'success get data vendor manual by id','data' => $data],200);
         return response()->json(['error' => true,'message' => 'failed get data vendor manual'],400);
     }
 }

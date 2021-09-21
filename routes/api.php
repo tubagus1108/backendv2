@@ -7,6 +7,7 @@ use App\Http\Controllers\API\PPATK\CitysController;
 use App\Http\Controllers\API\PPATK\CountryController;
 use App\Http\Controllers\API\PPATK\ProvincesController;
 use App\Http\Controllers\API\Receipt\ReciptsController;
+use App\Http\Controllers\API\Transaction\TransactionsController;
 use App\Http\Controllers\API\Vendor\VendorKursManualController;
 use App\Http\Controllers\API\Voucher\VoucherController;
 use App\Http\Controllers\Migrasi\BiChecksController;
@@ -60,6 +61,8 @@ Route::prefix('city')->group(function(){
     Route::get('get-city/{id}',[CitysController::class,'getSpesificCity']);
     Route::get('spesifikasi-city/{id_province}',[CitysController::class,'getCitybyProv']);
 });
+Route::get('kursmanual',[VendorKursManualController::class,'kursmanual']);
+Route::get('kursmanualbyid/{id}',[VendorKursManualController::class,'getKursManualID']);
 Route::middleware(['auth:admin-api','api_admin'])->group(function(){
     Route::prefix('voucher')->group(function(){
         Route::post('create',[VoucherController::class, 'create_voucher']);
@@ -68,7 +71,6 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
     });
     Route::prefix('vendor-manual')->group(function(){
         Route::post('create-vendor',[VendorKursManualController::class,'addVendorkurs']);
-        Route::get('get-vendor',[VendorKursManualController::class,'kursmanual']);
     });
     Route::prefix('bank')->group(function(){
         Route::post('create',[BankAdminController::class,'addBank']);
@@ -103,5 +105,8 @@ Route::middleware(['auth:api-user','api_user','cors','json.response'])->group(fu
         Route::get('get-receipt',[ReciptsController::class, 'getReceipts']);
         Route::get('get-receipt/{country}',[ReciptsController::class, 'getRecipientCountry']);
         Route::post('update-receipt/{id}',[ReciptsController::class,'updateReceipt']);
+    });
+    Route::prefix('transaction')->group(function(){
+        Route::post('transaction-user',[TransactionsController::class,'addTransaction']);
     });
 });
