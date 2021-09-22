@@ -98,7 +98,7 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('usersdata/{startDate}/{endDate}',[UserController::class,'getUserData']);
     });
 });
-Route::middleware(['auth:api-user','api_user','cors','json.response'])->group(function(){
+Route::middleware(['auth:api-user','api_user'])->group(function(){
     Route::get('get-user',[UserController::class,'getUser']);
     Route::prefix('receipt')->group(function(){
         Route::post('create',[ReciptsController::class, 'create_recipts']);
@@ -109,4 +109,5 @@ Route::middleware(['auth:api-user','api_user','cors','json.response'])->group(fu
     Route::prefix('transaction')->group(function(){
         Route::post('transaction-user',[TransactionsController::class,'addTransaction']);
     });
+
 });

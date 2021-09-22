@@ -140,7 +140,7 @@ class UserController extends Controller
     {
         $validated = Validator::make($request->all(),[
             'type_user' => 'required|integer|in:1,2,3,4',
-            'user_hp' => 'required',
+            'user_hp' => 'required|unique:users,user_hp,',
             'email' => 'required|email|unique:users,email,',
             'password' => 'required|min:5',
             'referral_code' => 'min:5',

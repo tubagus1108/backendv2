@@ -17,8 +17,8 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->string('invoice_num')->nullable();
             $table->integer('rec_id')->nullable();
-            $table->decimal('customer_rate')->nullable();
-            $table->decimal('fee')->nullable();
+            $table->double('customer_rate')->nullable();
+            $table->double('fee')->nullable();
             $table->integer('status')->nullable();
             $table->string('status_trx')->nullable();
             $table->string('status_trx_admin')->nullable();
@@ -26,11 +26,11 @@ class CreateTransactionsTable extends Migration
             $table->string('status_order')->nullable();
             $table->text('remarks_order')->nullable();
             $table->string('status_paid')->nullable();
-            $table->decimal('recipient_gets')->nullable();
-            $table->decimal('send')->nullable();
+            $table->double('recipient_gets')->nullable();
+            $table->double('send')->nullable();
             $table->string('vendor_name')->nullable();
-            $table->decimal('vendor_rate')->nullable();
-            $table->decimal('vendor_fee')->nullable();
+            $table->double('vendor_rate')->nullable();
+            $table->double('vendor_fee')->nullable();
             $table->string('status_vendor')->nullable();
             $table->integer('bank_id')->nullable();
             $table->integer('voucher_id')->nullable();

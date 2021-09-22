@@ -16,7 +16,7 @@ class BankAdminController extends Controller
     public function addBank(Request $request)
     {
         $validated = Validator::make($request->all(),[
-            'bank_name' => 'required',
+            'bank_name' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
             'acc_name' => 'required',
             'no_rek' => 'required',
             'cab_bank' => 'required',
