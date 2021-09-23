@@ -16,6 +16,21 @@ class CurrencyController extends Controller
             return response()->json(['error' => false, 'message' => 'Success get currency!!', 'data' => $data],200);
         return response()->json(['error' => false, 'message' => 'Failed get currency!!'],400);
     }
+    public function addCurrency(Request $request)
+    {
+        $validated = Validator::make($request->all(),[
+            'curr_code' => 'required',
+            'negara' => 'required|unique:currency,negara,',
+            'int_name' => 'required',
+        ]);
+        if($validated->fails())
+        {
+            return response()->json(['error' => true, 'message' => $validated->errors()],400);
+        }
+        $data = Currency::create($request->all());
+        if($data)
+            return response()->json(['error' => false,'message' => 'success add currency','data' => $data]);
+    }
     public function updateCurrency(Request $request, $id){
         $validated = Validator::make($request->all(),[
             'curr_code' => 'required',

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\Bank;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
+use App\Models\BankList;
+use App\Models\Service;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -93,5 +95,22 @@ class BankAdminController extends Controller
         if($data)
             return response()->json(['error' => false, 'message' => 'Success get data bank!!', 'data' => $data],200);
         return response()->json(['error' => true, 'message' => 'Failed get data bank!!'],400);
+    }
+    public function addService(Request $request)
+    {
+        $validated = Validator::make($request->all(),[
+            'name' => 'required',
+        ]);
+        if($validated->fails()){
+            return response()->json(['error'=> true,'message' => $validated->errors()],400);
+        }
+        $data = Service::create($request->all());
+        if($data)
+            return response()->json(['error' => false,'message' => 'success service','data' => $data],200);
+    }
+    public function getBankList()
+    {
+        $data = BankList::where('deleted_at',null)->with('currency_ralation','service_realation')->get();
+        return $data;
     }
 }

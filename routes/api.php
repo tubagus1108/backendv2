@@ -11,6 +11,8 @@ use App\Http\Controllers\API\Transaction\TransactionsController;
 use App\Http\Controllers\API\Vendor\VendorKursManualController;
 use App\Http\Controllers\API\Voucher\VoucherController;
 use App\Http\Controllers\Migrasi\BiChecksController;
+use App\Http\Controllers\Migrasi\MigrasiBankList;
+use App\Http\Controllers\Migrasi\MigrasiBankListController;
 use App\Http\Controllers\Migrasi\MigrasiCityPPATKController;
 use App\Http\Controllers\Migrasi\MigrasiCurrencyController;
 use App\Http\Controllers\Migrasi\MigrasiCountryController;
@@ -36,6 +38,7 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+Route::get('migrasi-banklist',[MigrasiBankListController::class,'migrasiBankList']);
 Route::get('migrasi-bicheck',[BiChecksController::class,'migrasiBiCheck']);
 Route::get('migrasi-country',[MigrasiCountryController::class,'migrasiCountry']);
 Route::get('migrasi-currency',[MigrasiCurrencyController::class,'migrasiCurrency']);
@@ -63,6 +66,11 @@ Route::prefix('city')->group(function(){
 });
 Route::get('kursmanual',[VendorKursManualController::class,'kursmanual']);
 Route::get('kursmanualbyid/{id}',[VendorKursManualController::class,'getKursManualID']);
+Route::post('currency-add',[CurrencyController::class,'addCurrency']);
+Route::prefix('service')->group(function(){
+    Route::post('add',[BankAdminController::class,'addService']);
+    Route::get('bank-list',[BankAdminController::class,'getBankList']);
+});
 Route::middleware(['auth:admin-api','api_admin'])->group(function(){
     Route::prefix('voucher')->group(function(){
         Route::post('create',[VoucherController::class, 'create_voucher']);
@@ -96,6 +104,13 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('user-kyc',[UserController::class,'getUserKYC']);
         Route::get('usersapprove/{startDate}/{endDate}',[UserController::class,'getUserApprove']);
         Route::get('usersdata/{startDate}/{endDate}',[UserController::class,'getUserData']);
+    });
+    Route::prefix('transaction-admin')->group(function(){
+        Route::get('transaction_all',[TransactionsController::class,'getAllTrasaction']);
+        Route::get('transaction_all_vendosend',[TransactionsController::class,'getAllTrasaction']);
+        Route::get('transaction_all/{id}',[TransactionsController::class,'getAllIdTransaction']);
+        Route::get('transaction_all_table/{start_date}/{end_date}',[TransactionsController::class,'getAllTrasactionTable']);
+        Route::get('transaction_complite',[TransactionsController::class,'getAllTrasactionComplit']);
     });
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){

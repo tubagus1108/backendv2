@@ -38,5 +38,9 @@ class Receipt extends Model
     {
         return $this->belongsTo(User::class,'user_id','id');
     }
+    public function bank_list_relation()
+    {
+        return $this->belongsTo(BankList::class,'list_bank_id','id');
+    }
 
 }

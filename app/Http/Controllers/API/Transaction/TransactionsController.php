@@ -71,6 +71,7 @@ class TransactionsController extends Controller
                 'postalcode' => $request->postalcode,
                 'region' => $request->region,
                 'bank_add' => $request->bank_add,
+                'list_bank_id' => $request->list_bank_id,
             ]);
             $acc_name_new = ucwords($create_new_receipt->first_name . " " . $create_new_receipt->last_name);
         }else{
@@ -146,6 +147,32 @@ class TransactionsController extends Controller
         return response()->json(['error' => true,'message' => 'failed create transaction','data' => $transaction],400);
 
     }
-
+    public function getAllTrasaction()
+    {
+        $data = Transaction::where('deleted_at',null)->where('service','<>','Bank Deposit')->with('receipt_relation','users_relation','bank_relation','voucher_relation')->orderBy('id_transaction','DESC')->get();
+        return $data;
+    }
+    public function getAllTrasaction2()
+    {
+        $data = Transaction::where('deleted_at',null)->where('status_order','Pending')->where('status_trx','Payment Approved')->with('receipt_relation','users_relation','bank_relation','voucher_relation')->orderBy('id','DESC')->get();
+        return $data;
+    }
+    public function getAllIdTransaction($id)
+    {
+        $data = Transaction::find($id);
+        return $data;
+    }
+    public function getAllTrasactionTable($start_date,$end_date)
+    {
+        $data = Transaction::with('receipt_relation','users_relation','bank_relation','voucher_relation')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+        if($data)
+            return response()->json(['error' => false, 'message' => 'Success get data voucher!!!', 'data' => $data],200);
+        return response()->json(['error' => true, 'message' => 'Failed get data voucher!!'],400);
+    }
+    public function getAllTrasactionComplit()
+    {
+        $data = Transaction::where('status_trx','Transaction Completed')->orWhere('status_trx','Payment Approved')->orWhere('status_trx','Transaction Processing')->orWhere('status_trx','Order Cancelled')->orderBy('id','DESC')->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        return $data;
+    }
 
 }

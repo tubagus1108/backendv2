@@ -15,7 +15,7 @@ class ReciptsController extends Controller
 {
     public function getReceipts()
     {
-        $data = Receipt::where('deleted_at',null)->with('vendor_relation')->get();
+        $data = Receipt::where('deleted_at',null)->with('vendor_relation','users_relation','bank_list_relation')->get();
         // dd($data);
         if($data)
             return response()->json(['error' => false, 'message' => 'sucess get data receipt!!', 'data' => $data],200);
