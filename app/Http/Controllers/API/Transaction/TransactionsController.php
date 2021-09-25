@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Voucher;
 use Carbon\Carbon;
 use Exception;
+use Facade\FlareClient\Flare;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -183,17 +184,27 @@ class TransactionsController extends Controller
     public function getApproveadminDetail($id)
     {
         clearstatcache();
-        $data = Transaction::select("*",
-        DB::raw('(CASE
-        WHEN trx.status_approve_1 = 0 THEN "Pending"
-        WHEN trx.status_approve_1 = 1 THEN "Approved"
-        ELSE "Reject" END) AS status_approve_1,
-        CASE WHEN trx.status_approve_2 = 0 THEN "Pending"
-        WHEN trx.status_approve_2 = 1 THEN "Approved"
-        ELSE "Reject" END) AS status_approve_2
-        )')
-        )->where('id',$id)->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
-        return $data;
+        $data = Transaction::select("*",DB::raw('(CASE WHEN transactions.status_approve_1 = "0" THEN "Pending" WHEN transactions.status_approve_1 = "1" THEN "Approved" ELSE "Reject" END) AS status_approve_1,(CASE WHEN transactions.status_approve_2 = "1" THEN "Pending" WHEN transactions.status_approve_2 = "0" THEN "Approved" ELSE "Reject" END) AS status_approve_2'))->where('transactions.id',$id)->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        if($data)
+            return response()->json(['error' =>false,'message' => 'Success get data approve admindetail','data' => $data],200);
+        return response()->json(['error' =>true,'message' => 'failed get data approve admindetail','data' => $data],400);
+        // return $data;
+    }
+    public function getApproveadmin($start_date,$end_date)
+    {
+        clearstatcache();
+        $data = Transaction::select("*",DB::raw('(CASE WHEN transactions.status_approve_1 = "0" THEN "Pending" WHEN transactions.status_approve_1 = "1" THEN "Approved" ELSE "Reject" END) AS status_approve_1,(CASE WHEN transactions.status_approve_2 = "1" THEN "Pending" WHEN transactions.status_approve_2 = "0" THEN "Approved" ELSE "Reject" END) AS status_approve_2'))->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        if($data)
+            return response()->json(['error' =>false,'message' => 'Success get data approve admindetail','data' => $data],200);
+        return response()->json(['error' =>true,'message' => 'failed get data approve admindetail','data' => $data],400);
+    }
+    public function getApprovesuperadmin($start_date,$end_date)
+    {
+        clearstatcache();
+        $data = Transaction::select("*",DB::raw('(CASE WHEN transactions.status_approve_1 = "0" THEN "Pending" WHEN transactions.status_approve_1 = "1" THEN "Approved" ELSE "Reject" END) AS status_approve_1,(CASE WHEN transactions.status_approve_2 = "1" THEN "Pending" WHEN transactions.status_approve_2 = "0" THEN "Approved" ELSE "Reject" END) AS status_approve_2'))->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        if($data)
+            return response()->json(['error' =>false,'message' => 'Success get data approve admindetail','data' => $data],200);
+        return response()->json(['error' =>true,'message' => 'failed get data approve admindetail','data' => $data],400);
     }
     public function havePaid(Request $request,$id)
     {
@@ -303,5 +314,39 @@ class TransactionsController extends Controller
     public function approveSuperAdmin(Request $request,$id)
     {
         $data_admin = User::where('id',Auth::guard('admin-api')->user()->id)->get();
+        $approve_status = $request->approve_status;
+        if($approve_status == 1)
+        {
+            $status_trx = "Payment Approved";
+        }else{
+            $status_trx = "Payment Rejected";
+        }
+        $data = Transaction::with('receipt_relation','users_relation','voucher_relation')->firstWhere('id',$id);
+        if($data)
+        {
+            $data = Transaction::find($id);
+            $data->status_trx = $status_trx;
+            $data->status_trx_admin = $status_trx;
+            $data->remarks_admin = $request->remarks_admin;
+            $data->approve_user_2 = $data_admin[0]->id;
+            $data->approve_at_2 = Carbon::now('Asia/Jakarta');
+            $data->status_approve_2 = $approve_status;
+            $data->updated_at = Carbon::now('Asia/Jakarta');
+            $activity_trxt = "Remarks - " . $request->remarks;
+            $data->save();
+            try{
+                LogTrx::create([
+                    'activity' => $status_trx,
+                    'trx_id' => $data->id,
+                    'user_id' => $data->users_relation->id,
+                ]);
+            }catch(Exception $e)
+            {
+                return response()->json(['error' => true,'message' => $e],400);
+            }
+            return response()->json(['error' => false, 'message' => 'succes approve admin transaction', 'data' => $data],200);
+        }else{
+            return response()->json(['error' => true, 'message' => 'NotFound data', 'data' => $data],404);
+        }
     }
 }

@@ -110,6 +110,8 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('transaction_all_vendosend',[TransactionsController::class,'getAllTrasaction']);
         Route::get('transaction_all/{id}',[TransactionsController::class,'getAllIdTransaction']);
         Route::get('transaction_all_table/{start_date}/{end_date}',[TransactionsController::class,'getAllTrasactionTable']);
+        Route::get('transaction_approve_1/{start_date}/{end_date}',[TransactionsController::class,'getApproveadmin']);
+        Route::get('transaction_approve_2/{start_date}/{end_date}',[TransactionsController::class,'getApprovesuperadmin']);
         Route::get('transaction_complite',[TransactionsController::class,'getAllTrasactionComplit']);
         Route::get('transaction/detail/{id}',[TransactionsController::class,'getApproveadminDetail']);
         Route::post('transaction_approve_1/{id}',[TransactionsController::class,'approveAdmin']);
