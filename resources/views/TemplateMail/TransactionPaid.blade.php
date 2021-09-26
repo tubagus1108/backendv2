@@ -24,17 +24,17 @@
     </p>
 
     <p>
-        <a href="{{ $details['name'] }}/transaction-invoice/{{ $details['id_transaction'] }}">
+        <a href="{{ $details['link'] }}/transaction-invoice/{{ $details['id_transaction'] }}">
             <img src="transaction-processing.png">
         </a>
     </p>
 
     <p>
-        You can track your transfer here <a href="{{ $details['name'] }}/transaction-invoice/{{ $details['id_transaction'] }}">here</a>.
+        You can track your transfer here <a href="{{ $details['link'] }}/transaction-invoice/{{ $details['id_transaction'] }}">here</a>.
     </p>
 
 	<p>
-		An estimation of the transfer period can be found <a href="{{ $details['name'] }}/transaction-invoice/{{ $details['id_transaction'] }}">here</a>.
+		An estimation of the transfer period can be found <a href="{{ $details['link'] }}/transaction-invoice/{{ $details['id_transaction'] }}">here</a>.
 	</p>
 
     <br>

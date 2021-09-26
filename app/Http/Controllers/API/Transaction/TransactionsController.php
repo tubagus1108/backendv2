@@ -154,7 +154,9 @@ class TransactionsController extends Controller
     public function getAllTrasaction()
     {
         $data = Transaction::where('deleted_at',null)->where('service','<>','Bank Deposit')->with('receipt_relation','users_relation','bank_relation','voucher_relation')->orderBy('id_transaction','DESC')->get();
-        return $data;
+        if($data)
+            return response()->json(['error' => false,'message' => 'success get transaction','data' => $data],200);
+        return response()->json(['error' => true,'message' => 'failed get transaction'],400);
     }
     public function getAllTrasaction2()
     {
@@ -205,6 +207,13 @@ class TransactionsController extends Controller
         if($data)
             return response()->json(['error' =>false,'message' => 'Success get data approve admindetail','data' => $data],200);
         return response()->json(['error' =>true,'message' => 'failed get data approve admindetail','data' => $data],400);
+    }
+    public function reportTransaction($start_date,$end_date)
+    {
+        $data = Transaction::where('deleted_at',null)->where('status_approve_1',1)->orWhere('status_approve_1',1)->orWhere('status_approve_2',1)->where('status_trx_admin','Payment Approved')->orWhere('status_trx','Payment Rejected')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        if($data)
+            return response()->json(['error' =>false,'message' => 'Success get data report','data' => $data],200);
+        return response()->json(['error' =>true,'message' => 'failed get data report','data' => $data],400);
     }
     public function havePaid(Request $request,$id)
     {
@@ -348,5 +357,12 @@ class TransactionsController extends Controller
         }else{
             return response()->json(['error' => true, 'message' => 'NotFound data', 'data' => $data],404);
         }
+    }
+    public function reportOrder($start_date,$end_date)
+    {
+        $data = Transaction::where('deleted_at',null)->where('status_approve_1',1)->where('status_approve_2',1)->where('status_order','Complete')->orWhere('status_order','Cancelled')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        if($data)
+            return response()->json(['error' =>false,'message' => 'Success get data report','data' => $data],200);
+        return response()->json(['error' =>true,'message' => 'failed get data report','data' => $data],400);
     }
 }

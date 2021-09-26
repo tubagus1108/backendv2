@@ -102,8 +102,8 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('approve_1',[UserController::class,'getApproveadmin']);
         Route::get('approve_2',[UserController::class,'getApprovesuperadmin']);
         Route::get('user-kyc',[UserController::class,'getUserKYC']);
-        Route::get('usersapprove/{startDate}/{endDate}',[UserController::class,'getUserApprove']);
-        Route::get('usersdata/{startDate}/{endDate}',[UserController::class,'getUserData']);
+        Route::get('usersapprove/{start_date}/{end_date}',[UserController::class,'getUserApprove']);
+        Route::get('usersdata/{start_date}/{end_date}',[UserController::class,'getUserData']);
     });
     Route::prefix('transaction-admin')->group(function(){
         Route::get('transaction_all',[TransactionsController::class,'getAllTrasaction']);
@@ -112,10 +112,12 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('transaction_all_table/{start_date}/{end_date}',[TransactionsController::class,'getAllTrasactionTable']);
         Route::get('transaction_approve_1/{start_date}/{end_date}',[TransactionsController::class,'getApproveadmin']);
         Route::get('transaction_approve_2/{start_date}/{end_date}',[TransactionsController::class,'getApprovesuperadmin']);
+        Route::get('report-transaction/{start_date}/{end_date}',[TransactionsController::class,'reportTransaction']);
         Route::get('transaction_complite',[TransactionsController::class,'getAllTrasactionComplit']);
         Route::get('transaction/detail/{id}',[TransactionsController::class,'getApproveadminDetail']);
         Route::post('transaction_approve_1/{id}',[TransactionsController::class,'approveAdmin']);
         Route::post('transaction_approve_2/{id}',[TransactionsController::class,'approveSuperAdmin']);
+        Route::get('report-order/{start_date}/{end_date}',[TransactionsController::class,'reportOrder']);
     });
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){

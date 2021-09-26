@@ -493,12 +493,23 @@ class UserController extends Controller
             return response()->json(['error'=>false,'message' => 'success get data kyc ','data' => $data],200);
         return response()->json(['error' => true, 'message' => 'failed get data kyc','data' => $data],400);
     }
-    public function getUserApprove($startDate,$endDate)
+    public function getUserApprove($start_date,$end_date)
     {
-
+        $data = User::where('deleted_at',null)->where('type_user',1)->orWhere('type_user',2)->where('approve_1','Approve')->where('approve_2','Approve')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with(array('admin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_admin_name"));
+        }))->with(array('superadmin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_super_admin_name"));
+        }))->get();
+        return $data;
     }
-    public function getUserData($startDate,$endDate)
+    public function getUserData($start_date,$end_date)
     {
+        $data = User::where('deleted_at',null)->where('type_user',1)->orWhere('type_user',2)->where('approve_2','<>',null)->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with(array('admin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_admin_name"));
+        }))->with(array('superadmin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_super_admin_name"));
+        }))->get();
+        return $data;
 
     }
     protected function genereteCode()

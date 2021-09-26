@@ -41,6 +41,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // protected $appends = ['approve_admin_name'];
     public function admin_relation()
     {
         return $this->belongsTo(User::class,'admin_approve_1','id');
@@ -48,5 +49,16 @@ class User extends Authenticatable
     public function superadmin_relation()
     {
         return $this->belongsTo(User::class,'admin_approve_2','id');
+    }
+    // public function getApproveAdminNameAttribute(){
+    //     return $this->admin_relation->gender;
+    // }
+    // public function getApproveSuperadminNameAttribute()
+    // {
+    //     return $this->superadmin_relation->first_name." ".$this->superadmin_relation->last_name;
+    // }
+    public function receipt_relation()
+    {
+        return $this->hasMany(Receipt::class,'user_id','id');
     }
 }
