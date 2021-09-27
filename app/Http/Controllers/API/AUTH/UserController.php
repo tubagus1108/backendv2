@@ -302,6 +302,7 @@ class UserController extends Controller
                 $data['token'] = $user->createToken('nApp')->accessToken;
                 $data['id'] = $user->id;
                 $data['name'] = $user->first_name . ' ' . $user->last_name;
+                $data['type_user'] = $user->type_user;
                 return response()->json(['error' =>false, 'message' => 'Login success!', 'data' => $data],200);
             }
             return response()->json(['error' => true, 'message' => 'Password is wrong'], 404);
