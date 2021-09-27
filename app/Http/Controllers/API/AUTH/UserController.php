@@ -315,7 +315,7 @@ class UserController extends Controller
             $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_admin_name"));
         }))->with(array('superadmin_relation' => function($query){
             $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_super_admin_name"));
-        }))->find($id);
+        }))->with('country_relation','province_relation','city_relation')->find($id);
         if($data)
             return response()->json(['error' => false,'message' => 'success get user by id','data' => $data],200);
         return response()->json(['error' => true,'message' => 'failed get user by id'],400);

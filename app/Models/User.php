@@ -61,4 +61,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Receipt::class,'user_id','id');
     }
+    public function country_relation()
+    {
+        return $this->belongsTo(Country::class,'country_id','id');
+    }
+    public function province_relation()
+    {
+        return $this->belongsTo(Province::class,'province_id','id');
+    }
+    public function city_relation()
+    {
+        return $this->belongsTo(City::class,'city_id','id');
+    }
+
 }
