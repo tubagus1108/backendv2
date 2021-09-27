@@ -365,4 +365,11 @@ class TransactionsController extends Controller
             return response()->json(['error' =>false,'message' => 'Success get data report','data' => $data],200);
         return response()->json(['error' =>true,'message' => 'failed get data report','data' => $data],400);
     }
+    public function getOrder($start_date,$end_date)
+    {
+        $data = Transaction::where('deleted_at',null)->where('status_approve_1',1)->where('status_approve_2',2)->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->with('receipt_relation','users_relation','bank_relation','voucher_relation')->get();
+        if($data)
+            return response()->json(['error' =>false,'message' => 'Success get data order','data' => $data],200);
+        return response()->json(['error' =>true,'message' => 'failed get data order','data' => $data],400);
+    }
 }

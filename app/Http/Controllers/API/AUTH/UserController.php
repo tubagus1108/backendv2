@@ -312,7 +312,7 @@ class UserController extends Controller
     public function getUser()
     {
         $user = User::where('id', Auth::guard('api-user')->user()->id)->get();
-        dd($user);
+        return $user;
         // $dataarray = [];
         // $dataarray = array(
         //     'id' => $user->id ,

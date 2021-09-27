@@ -105,6 +105,7 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('user-kyc',[UserController::class,'getUserKYC']);
         Route::get('usersapprove/{start_date}/{end_date}',[UserController::class,'getUserApprove']);
         Route::get('usersdata/{start_date}/{end_date}',[UserController::class,'getUserData']);
+
     });
     Route::prefix('transaction-admin')->group(function(){
         Route::get('transaction_all',[TransactionsController::class,'getAllTrasaction']);
@@ -119,6 +120,7 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::post('transaction_approve_1/{id}',[TransactionsController::class,'approveAdmin']);
         Route::post('transaction_approve_2/{id}',[TransactionsController::class,'approveSuperAdmin']);
         Route::get('report-order/{start_date}/{end_date}',[TransactionsController::class,'reportOrder']);
+        Route::get('order/{start_date}/{end_date}',[TransactionsController::class,'getOrder']);
     });
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){
