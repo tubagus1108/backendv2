@@ -38,12 +38,13 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::get('migrasi-banklist',[MigrasiBankListController::class,'migrasiBankList']);
-Route::get('migrasi-bicheck',[BiChecksController::class,'migrasiBiCheck']);
-Route::get('migrasi-country',[MigrasiCountryController::class,'migrasiCountry']);
-Route::get('migrasi-currency',[MigrasiCurrencyController::class,'migrasiCurrency']);
-Route::get('migrasi-province',[MigrasiProvinceController::class,'migrasiProvince']);
-Route::get('migrasi-city',[MigrasiCityPPATKController::class,'migrasiCity']);
+
+// Route::get('migrasi-banklist',[MigrasiBankListController::class,'migrasiBankList']);
+// Route::get('migrasi-bicheck',[BiChecksController::class,'migrasiBiCheck']);
+// Route::get('migrasi-country',[MigrasiCountryController::class,'migrasiCountry']);
+// Route::get('migrasi-currency',[MigrasiCurrencyController::class,'migrasiCurrency']);
+// Route::get('migrasi-province',[MigrasiProvinceController::class,'migrasiProvince']);
+// Route::get('migrasi-city',[MigrasiCityPPATKController::class,'migrasiCity']);
 Route::post('register',[UserController::class,'register']);
 Route::post('login',[UserController::class, 'login']);
 Route::prefix('country')->group(function(){
