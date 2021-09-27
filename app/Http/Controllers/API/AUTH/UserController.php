@@ -309,10 +309,16 @@ class UserController extends Controller
         }
         return response()->json(['error' => true, 'message' => 'Email not found !'], 404);
     }
-    public function getUser()
+    public function getUser($id)
     {
-        $user = User::where('id', Auth::guard('api-user')->user()->id)->get();
-        return $user;
+        $data = User::with(array('admin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_admin_name"));
+        }))->with(array('superadmin_relation' => function($query){
+            $query->select('id',DB::raw("CONCAT(first_name,' ',last_name) as approve_super_admin_name"));
+        }))->find($id);
+        if($data)
+            return response()->json(['error' => false,'message' => 'success get user by id','data' => $data],200);
+        return response()->json(['error' => true,'message' => 'failed get user by id'],400);
         // $dataarray = [];
         // $dataarray = array(
         //     'id' => $user->id ,

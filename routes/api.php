@@ -105,6 +105,7 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('user-kyc',[UserController::class,'getUserKYC']);
         Route::get('usersapprove/{start_date}/{end_date}',[UserController::class,'getUserApprove']);
         Route::get('usersdata/{start_date}/{end_date}',[UserController::class,'getUserData']);
+        Route::get('user/{id}',[UserController::class,'getUser']);
 
     });
     Route::prefix('transaction-admin')->group(function(){
@@ -124,7 +125,6 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
     });
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){
-    Route::get('get-user',[UserController::class,'getUser']);
     Route::prefix('receipt')->group(function(){
         Route::post('create',[ReciptsController::class, 'create_recipts']);
         Route::get('get-receipt',[ReciptsController::class, 'getReceipts']);
