@@ -387,10 +387,12 @@ class UserController extends Controller
             $data->approve_1 = $request->approve_1;
             $data->admin_approve_1 = $check_admin[0]->id;
             $data->approvedate_1 = $carbon_date;
-            LogVerification::create([
-                'user_id' => $user_id,
-                'description' => $description2,
-            ]);
+            if($request->approve_1 == 'Approve'){
+                LogVerification::create([
+                    'user_id' => $user_id,
+                    'description' => $description2,
+                ]);
+            }
             $data->save();
             if($request->approve_1 == 'Reject'){
                 LogVerification::create([
@@ -432,10 +434,13 @@ class UserController extends Controller
             $data->admin_approve_2 = $check_admin[0]->id;
             $data->approvedate_2 = $carbon_date;
             $data->user_status = $status_usr1;
-            LogVerification::create([
-                'user_id' => $user_id,
-                'description' => $description2,
-            ]);
+            if($request->approve_2 == 'Approve')
+            {
+                LogVerification::create([
+                    'user_id' => $user_id,
+                    'description' => $description2,
+                ]);
+            }
             $data->save();
             if($request->approve_2 == 'Reject'){
                 LogVerification::create([
