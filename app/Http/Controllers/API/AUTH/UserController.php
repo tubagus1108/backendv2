@@ -310,6 +310,11 @@ class UserController extends Controller
         }
         return response()->json(['error' => true, 'message' => 'Email not found !'], 404);
     }
+    public function UserId()
+    {
+        $data = User::where('deleted_at',null)->where('id',Auth::guard('api-user')->user()->id)->get();
+        return $data;
+    }
     public function getUser($id)
     {
         $data = User::with(array('admin_relation' => function($query){

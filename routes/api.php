@@ -129,6 +129,9 @@ Route::prefix('tranglo')->group(function(){
     Route::get('rate',[TrangloController::class,'forex']);
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){
+    Route::prefix('user')->group(function(){
+        Route::get('user}',[UserController::class,'UserId']);
+    });
     Route::prefix('receipt')->group(function(){
         Route::post('create',[ReciptsController::class, 'create_recipts']);
         Route::get('get-receipt',[ReciptsController::class, 'getReceipts']);
