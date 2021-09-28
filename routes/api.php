@@ -130,7 +130,7 @@ Route::prefix('tranglo')->group(function(){
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){
     Route::prefix('user')->group(function(){
-        Route::get('user}',[UserController::class,'UserId']);
+        Route::get('user',[UserController::class,'UserId']);
     });
     Route::prefix('receipt')->group(function(){
         Route::post('create',[ReciptsController::class, 'create_recipts']);
