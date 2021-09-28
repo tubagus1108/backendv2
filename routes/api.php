@@ -8,6 +8,7 @@ use App\Http\Controllers\API\PPATK\CountryController;
 use App\Http\Controllers\API\PPATK\ProvincesController;
 use App\Http\Controllers\API\Receipt\ReciptsController;
 use App\Http\Controllers\API\Transaction\TransactionsController;
+use App\Http\Controllers\API\Vendor\TrangloController;
 use App\Http\Controllers\API\Vendor\VendorKursManualController;
 use App\Http\Controllers\API\Voucher\VoucherController;
 use App\Http\Controllers\Migrasi\BiChecksController;
@@ -123,6 +124,9 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
         Route::get('report-order/{start_date}/{end_date}',[TransactionsController::class,'reportOrder']);
         Route::get('order/{start_date}/{end_date}',[TransactionsController::class,'getOrder']);
     });
+});
+Route::prefix('tranglo')->group(function(){
+    Route::get('rate',[TrangloController::class,'forex']);
 });
 Route::middleware(['auth:api-user','api_user'])->group(function(){
     Route::prefix('receipt')->group(function(){
