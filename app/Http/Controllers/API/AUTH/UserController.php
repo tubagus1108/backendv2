@@ -27,17 +27,11 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,',
         ]);
         if($validated->fails()){
-            return response()->json(['error' =>true, 'message' => $validated->errors()],400);
+            return response()->json(['error' => true, 'message' => $validated->errors()],400);
         }
-        $data = User::where('email',$request->email)->get();
-        if (empty($data)) {
-            $status = false;
-            $msg = "Email not found";
-        } else {
-            $status = true;
-            $msg = "Email already exist";
-        }
-        return response()->json(['error' => $status,'message' => $msg],200);
+        $data = User::where('email', $request->email)->get();
+        if($data)
+            return response()->json(['error' => false,'message' => 'Email not Found'],200);
     }
     public function registerByadmin(Request $request)
     {
