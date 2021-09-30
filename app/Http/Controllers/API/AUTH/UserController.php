@@ -25,13 +25,14 @@ class UserController extends Controller
     {
         $validated = Validator::make($request->all(),[
             'email' => 'required|email|unique:users,email,',
+            'user_hp' => 'required|unique:users,user_hp,',
         ]);
         if($validated->fails()){
             return response()->json(['error' => true, 'message' => $validated->errors()],400);
         }
-        $data = User::where('email', $request->email)->get();
+        $data = User::where('email', $request->email)->where('user_hp', $request->user_hp)->get();
         if($data)
-            return response()->json(['error' => false,'message' => 'Email not Found'],200);
+            return response()->json(['error' => false,'message' => 'Email not Found OR No handphone not found'],200);
     }
     public function registerByadmin(Request $request)
     {
