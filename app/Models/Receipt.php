@@ -14,7 +14,7 @@ class Receipt extends Model
 
     public function vendor_relation()
     {
-        return $this->belongsTo(VendorKursManual::class,'vendor_manual_id','id');
+        return $this->belongsTo(VendorKurs::class,'vendor_id','id');
     }
     public function getCurrencyToAttribute()
     {

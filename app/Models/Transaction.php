@@ -23,7 +23,7 @@ class Transaction extends Model
     {
         $resault = "Currency Tidak ditemukan";
         if($this->receipt_relation){
-            $tableVendorManual = VendorKursManual::where('id',$this->receipt_relation->vendor_manual_id)->first();
+            $tableVendorManual = VendorKurs::where('id',$this->receipt_relation->vendor_id)->first();
             $tableCurrency = Currency::where('id',$tableVendorManual->id)->first();
             $resault = $tableCurrency['curr_code'];
         }

@@ -21,13 +21,31 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function check_email(Request $request)
+    {
+        $validated = Validator::make($request->all(),[
+            'email' => 'required|email|unique:users,email,',
+        ]);
+        if($validated->fails()){
+            return response()->json(['error' =>true, 'message' => $validated->errors()],400);
+        }
+        $data = User::where('email',$request->email)->get();
+        if (empty($data)) {
+            $status = false;
+            $msg = "Email not found";
+        } else {
+            $status = true;
+            $msg = "Email already exist";
+        }
+        return response()->json(['error' => $status,'message' => $msg],200);
+    }
     public function registerByadmin(Request $request)
     {
         $validated = Validator::make($request->all(),[
             'type_user' => 'required|integer|in:1,2',
             'user_hp' => 'required',
             'email' => 'required|email|unique:users,email,',
-            'password' => 'required|min:5',
+            'password' => 'required|confirmed|min:6',
             'referral_code' => 'min:5',
             'id_card_num' => 'required|unique:users,id_card_num,'
         ]);
@@ -163,29 +181,29 @@ class UserController extends Controller
             $file = $request->file('foto_id_card');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_id_card')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('KTP/'.$file->getClientOriginalName());
-            $pathKTP = asset('KTP/'.$file->getClientOriginalName());
+            $file->move('KTP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $pathKTP = asset('KTP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
         }
         if($request->hasFile('foto_selfie_id_card')){
             $file = $request->file('foto_selfie_id_card');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_selfie_id_card')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('KTPSELF/'.$file->getClientOriginalName());
-            $pathKTPSelfi = asset('KTPSELF/'.$file->getClientOriginalName());
+            $file->move('KTPSELFI/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $pathKTPSelfi = asset('KTPSELFI/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
         }
         if($request->hasFile('foto_izin_company')){
             $file = $request->file('foto_izin_company');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_izin_company')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('IZINCOMPANY/'.$file->getClientOriginalName());
-            $foto_izin_company = asset('IZINCOMPANY/'.'BIMG-'.$file->getClientOriginalName());
+            $file->move('IZINCOMPANY/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $foto_izin_company = asset('IZINCOMPANY/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
         }
         if($request->hasFile('foto_npwp')){
             $file = $request->file('foto_npwp');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_npwp')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('NPWP/'.'BIMG-'.$file->getClientOriginalName());
-            $foto_npwp = asset('NPWP/'.'BIMG-'.$file->getClientOriginalName());
+            $file->move('NPWP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $foto_npwp = asset('NPWP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
         }
         $status_usr = "Waiting for Verification";
         $user = new User();
@@ -234,13 +252,32 @@ class UserController extends Controller
         $user->status_bi_check = $bicheck;
         $genereteCode = $this->genereteCode();
         $user->referral_code = $genereteCode;
-        // $check_refellar = User::where('referral_code',$request->referral_code)->get();
-        // if(!count($check_refellar)){
-        //     return response()->json(['error' => true, 'message' => 'Referral Code not Found']);
-        // }
+        if($request->referral_code)
+        {
+            $data_referral = User::where('referral_code',$request->referral_code);
+            if(!count($data_referral)){
+                return response()->json(['error' => false,'message' => 'Referral Code not Found'],200);
+            }
+        }
         $user->save();
         if(!$user){
             return response()->json(['error' => true, 'message' => 'Registrasi failed !!', 'data' => $user->id],400);
+        }
+        //Insert to table referal
+        if($request->referral_code)
+        {
+            if(count($data_referral))
+            {
+                $codeInvite = $this->generateCode();
+                $user_id = $data_referral[0]->id;
+                Refellar::create([
+                    'user_id' => $user_id,
+                    'user_id_invite' => $user->id,
+                    'code_voucher' => $codeInvite,
+                    'status' => 0,
+                ]);
+
+            }
         }
         $nominal_voucer = $_ENV['VOUCHER_NOMINAL_REGISTER'];
         try{

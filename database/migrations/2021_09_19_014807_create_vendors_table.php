@@ -17,7 +17,7 @@ class CreateVendorsTable extends Migration
             $table->id();
             $table->string('vendor_name')->nullable();
             $table->integer('id_currency')->nullable();
-            $table->integer('id_vendor_manual')->nullable();
+            $table->integer('id_vendor')->nullable();
             $table->string('vendor_type')->nullable();
             $table->integer('active_status')->nullable();
             $table->timestamps();

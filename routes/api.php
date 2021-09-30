@@ -8,6 +8,7 @@ use App\Http\Controllers\API\PPATK\CountryController;
 use App\Http\Controllers\API\PPATK\ProvincesController;
 use App\Http\Controllers\API\Receipt\ReciptsController;
 use App\Http\Controllers\API\Transaction\TransactionsController;
+use App\Http\Controllers\API\Vendor\BCAController;
 use App\Http\Controllers\API\Vendor\TrangloController;
 use App\Http\Controllers\API\Vendor\VendorKursManualController;
 use App\Http\Controllers\API\Voucher\VoucherController;
@@ -39,13 +40,16 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-// Route::get('migrasi-banklist',[MigrasiBankListController::class,'migrasiBankList']);
-// Route::get('migrasi-bicheck',[BiChecksController::class,'migrasiBiCheck']);
-// Route::get('migrasi-country',[MigrasiCountryController::class,'migrasiCountry']);
-// Route::get('migrasi-currency',[MigrasiCurrencyController::class,'migrasiCurrency']);
-// Route::get('migrasi-province',[MigrasiProvinceController::class,'migrasiProvince']);
-// Route::get('migrasi-city',[MigrasiCityPPATKController::class,'migrasiCity']);
+// Route::prefix('bca')->prefix(function(){
+    Route::get('token',[BCAController::class,'index']);
+// });
+Route::post('check-email',[UserController::class,'check_email']);
+Route::get('migrasi-banklist',[MigrasiBankListController::class,'migrasiBankList']);
+Route::get('migrasi-bicheck',[BiChecksController::class,'migrasiBiCheck']);
+Route::get('migrasi-country',[MigrasiCountryController::class,'migrasiCountry']);
+Route::get('migrasi-currency',[MigrasiCurrencyController::class,'migrasiCurrency']);
+Route::get('migrasi-province',[MigrasiProvinceController::class,'migrasiProvince']);
+Route::get('migrasi-city',[MigrasiCityPPATKController::class,'migrasiCity']);
 Route::post('register',[UserController::class,'register']);
 Route::post('login',[UserController::class, 'login']);
 Route::prefix('country')->group(function(){
@@ -82,6 +86,10 @@ Route::middleware(['auth:admin-api','api_admin'])->group(function(){
     Route::prefix('vendor-manual')->group(function(){
         Route::post('create-vendor',[VendorKursManualController::class,'addVendorkurs']);
     });
+    Route::prefix('kurs')->group(function(){
+        Route::post('kurs-delete/{id}',[VendorKursManualController::class,'deleteKurs']);
+    });
+
     Route::prefix('bank')->group(function(){
         Route::post('create',[BankAdminController::class,'addBank']);
         Route::get('get',[BankAdminController::class,'getBank']);

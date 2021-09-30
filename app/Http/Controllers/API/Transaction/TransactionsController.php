@@ -31,14 +31,15 @@ class TransactionsController extends Controller
         if($validated->fails())
         {
             return response()->json(['error' => true,'message' => $validated->errors()],400);
-        };
+        }
         $data = User::where('id',Auth::guard('api-user')->user()->id)->get();
         // return $data[0]->id;
         if(!$data)
         {
             return response()->json(['error' =>true, 'message' => 'User not Found'],400);
         }
-
+        if($data[0]->approve_1 == 'Approve' && $data[0]->approve_2 == 'Approve')
+        {
         if($request->recipient_type == 2)
         {
             $create_new_receipt = Receipt::create([
@@ -46,7 +47,7 @@ class TransactionsController extends Controller
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'type_receipt' => $request->type_receipt,
-                'vendor_manual_id' => $request->vendor_manual_id,
+                'vendor_id' => $request->vendor_id,
                 'service' => $request->service,
                 'acc_number' => $request->acc_number,
                 'id_type' => $request->id_type,
@@ -149,7 +150,9 @@ class TransactionsController extends Controller
         if($transaction)
             return response()->json(['error' => false,'message' => 'success create transaction','data' => $transaction],200);
         return response()->json(['error' => true,'message' => 'failed create transaction','data' => $transaction],400);
-
+        }else{
+            return response()->json(['error' => false,'message' =>'Your account can`t make transactions, don`t forget to verify your data'],400);
+        }
     }
     public function getAllTrasaction()
     {
