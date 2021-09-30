@@ -28,7 +28,7 @@ class UserController extends Controller
             'user_hp' => 'required|unique:users,user_hp,',
         ]);
         if($validated->fails()){
-            return response()->json(['error' => true, 'message' => $validated->errors()],422);
+            return response()->json(['error' => true, 'message' => $validated->errors()],200);
         }
         $data = User::where('email', $request->email)->where('user_hp', $request->user_hp)->get();
         if($data)
