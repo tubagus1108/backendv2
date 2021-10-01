@@ -176,30 +176,33 @@ class UserController extends Controller
             $file = $request->file('foto_id_card');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_id_card')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('KTP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
-            $pathKTP = asset('KTP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            // $file->move('KTP/',$file->getClientOriginalName());
+            // $pathKTP = asset('KTP/',$file->getClientOriginalName());
+            $file->move('KTP/',$request->first_name.'USER-'.$file->getClientOriginalName());
+            $pathKTP = asset('KTP/'.$request->first_name.'USER-'.$file->getClientOriginalName());
         }
         if($request->hasFile('foto_selfie_id_card')){
             $file = $request->file('foto_selfie_id_card');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_selfie_id_card')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('KTPSELFI/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
-            $pathKTPSelfi = asset('KTPSELFI/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $file->move('KTPSELFI/',$request->first_name.'USER-'.$file->getClientOriginalName());
+            $pathKTPSelfi = asset('KTPSELFI/'.$request->first_name.'USER-'.$file->getClientOriginalName());
         }
         if($request->hasFile('foto_izin_company')){
             $file = $request->file('foto_izin_company');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_izin_company')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('IZINCOMPANY/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
-            $foto_izin_company = asset('IZINCOMPANY/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $file->move('IZINCOMPANY/',$request->first_name.'USER-'.$file->getClientOriginalName());
+            $foto_izin_company = asset('IZINCOMPANY/'.$request->first_name.'USER-'.$file->getClientOriginalName());
         }
         if($request->hasFile('foto_npwp')){
             $file = $request->file('foto_npwp');
             $fileName = $file->getClientOriginalName();
             if (!in_array($request->file('foto_npwp')->getClientOriginalExtension(), array('jpg', 'jpeg', 'png'))) return response()->json(['error' => true, 'message' => 'File type is not supported, support only JPG, JPEG and PNG !'], 200);
-            $file->move('NPWP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
-            $foto_npwp = asset('NPWP/',$request->first_name." ".$request->last_name. 'USER-'.$file->getClientOriginalName());
+            $file->move('NPWP/',$request->first_name.'USER-'.$file->getClientOriginalName());
+            $foto_npwp = asset('NPWP/'.$request->first_name.'USER-'.$file->getClientOriginalName());
         }
+        // $tgl_lahir = Carbon::createFromFormat('Y-m-d H:i:s',$request->date_birth)->format('F j, Y @ g:i A');
         $status_usr = "Waiting for Verification";
         $user = new User();
         $user->email = $request->email;
