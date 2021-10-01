@@ -79,17 +79,6 @@ class BCAController extends Controller
 	}
     public function index()
 	{
-        $data = Currency::where('deleted_at',null)->get();
-        $query = [
-            $data[0]['curr_code']
-        ];
-        $i=0;
-        foreach($data as $item)
-        {
-            if($i!=0)
-                $query[] = $item['curr_code'];
-            $i++;
-        }
         // return $query[0];
         $this->getToken();
         $path = '/general/rate/forex?CurrencyCode=&RateType=erate';
@@ -115,59 +104,47 @@ class BCAController extends Controller
 
         $output = curl_exec($ch); // This is API Response
         curl_close($ch);
-        $data = json_decode($output,true);
-        // return $dataBca;
+        $data = json_decode($output);
+        // return $data;
         $vendor_bca = [];
-        if(is_array($data))
+        $i = 0;
+        foreach($data->Currencies as $item)
         {
-            $i = 0;
-            foreach($data['Currencies'] as $row)
-            {
-                $CurrencyCode = 'IDR';
-                $RateType = $row['RateDetail'][0]['RateType'];
-				$Buy = $row['RateDetail'][0]['Buy'];
-				$Sell = $row['RateDetail'][0]['Sell'];
-				$LastUpdate = $row['RateDetail'][0]['LastUpdate'];
-				$currency_to = $row['CurrencyCode'];
 
-                // return $CurrencyCode;
-                $dataCurrTo = Currency::where('curr_code',$currency_to)->get();
-                // return $dataCurrTo[0]->id;
-                $dataCurr = Currency::where('curr_code',$CurrencyCode)->get();
-                VendorKurs::create([
-                    'vendor_name' => 'BCA',
-                    'rate_type' => $RateType,
-                    'buy' => $Buy,
-                    'sell' => $Sell,
-                    'currency_code' => $CurrencyCode,
-                    'currency_to' => $currency_to,
-                    'status_active' => 1,
-                    'last_update' => Carbon::now('Asia/Jakarta'),
-                    'id_currency' => $dataCurr[0]->id,
-                    'id_currency_to' => $dataCurrTo[0]->id,
-                ]);
-                $i++;
-            }
-            return "BCA AMAN UPDATE $i Record";
-        }else{
-            return "BCA Error Bro";
+            $vendor_bca[] = $item;
+            $i++;
         }
-        // return $CurrencyCode;
-                // $dataCurrTo = Currency::where('curr_code',$item[0]->CurrencyCode)->get();
-                // $dataCurr = Currency::where('curr_code',$CurrencyCode)->get();
-                // VendorKurs::create([
-                //     'vendor_name' => 'BCA',
-                //     'rate_type' => $item[0]->RateDetail[0]->RateType,
-                //     'buy' => $item[0]->RateDetail[0]->Buy,
-                //     'sell' => $item[0]->RateDetail[0]->Sell,
-                //     'currency_code' => $CurrencyCode,
-                //     'currency_to' => $item[0]->CurrencyCode,
-                //     'status_active' => 1,
-                //     'last_update' => Carbon::now('Asia/Jakarta'),
-                //     'id_currency' => $dataCurr[0]->id,
-                //     'id_currency_to' => $dataCurrTo[0]->id,
-                // ]);
         // return $vendor_bca;
+        $result = [];
+        $i = 0;
+        foreach($vendor_bca as $item)
+        {
+            // $result[] = $item->RateDetail[0]->Buy;
+            // $result[] = $item->RateDetail[0]->Sell;
+            $currFrom = 'IDR';
+            $dataCurrFrom = Currency::where('curr_code',$currFrom)->get();
+            $dataCurrTO = Currency::where('curr_code',$item->CurrencyCode)->get();
+            // return $dataCurrTO[0]->id;
+            // return $dataCurrTO;
+            $var = $item->RateDetail[0]->Buy;
+            $buyConvert = floatval($var);
+            $var2 = $item->RateDetail[0]->Sell;
+            $sellConvert = floatval($var2);
+            VendorKurs::create([
+                'vendor_name' => 'BCA',
+                'buy' => $buyConvert,
+                'sell' => $sellConvert,
+                'currency_code' => $currFrom,
+                'currency_to' => $item->CurrencyCode,
+                'status_active' => 1,
+                'last_update' => Carbon::now('Asia/Jakarta'),
+                'id_currency' => $dataCurrFrom[0]->id,
+                'id_currency_to' => $dataCurrTO[0]->id,
+            ]);
+            $i++;
+        }
+        return $result;
+
 	}
 
 }

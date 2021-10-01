@@ -52,7 +52,7 @@ class TrangloController extends Controller
             $result[] = $view;
         }
         // return response()->json(['error' => false,'data' => $result]);
-        return $result;
+        // return $result;
         // dd($result);
         $i = 0;
         $currVendor = [];

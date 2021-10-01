@@ -224,9 +224,6 @@ class UserController extends Controller
             $user->foto_npwp = $foto_npwp ?? null;
             $user->foto_izin_company = $foto_izin_company ?? null;
         }
-        $user->company_type = $request->company_type;
-        $user->company_role = $request->company_role;
-        $user->company_address = $request->company_address;
         $user->company_website = $request->company_website;
         $user->place_birth = $request->place_birth;
         $user->date_birth = $request->date_birth;

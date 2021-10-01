@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('company_role')->nullable();
             $table->string('company_website')->nullable();
             $table->string('place_birth');
-            $table->date('date_birth');
+            $table->dateTime('date_birth');
             $table->text('company_address')->nullable();
             $table->text('address');
             $table->integer('country_id')->nullable();

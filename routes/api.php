@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 // Route::prefix('bca')->prefix(function(){
-    Route::get('token',[BCAController::class,'index']);
+    Route::get('bca-rate',[BCAController::class,'index']);
 // });
 Route::post('check-email',[UserController::class,'check_email']);
 Route::get('migrasi-banklist',[MigrasiBankListController::class,'migrasiBankList']);
