@@ -247,33 +247,33 @@ class UserController extends Controller
         $user->status_bi_check = $bicheck;
         $genereteCode = $this->genereteCode();
         $user->referral_code = $genereteCode;
-        if($request->referral_code)
-        {
-            $data_referral = User::where('referral_code',$request->referral_code);
-            if(!count($data_referral)){
-                return response()->json(['error' => false,'message' => 'Referral Code not Found'],200);
-            }
-        }
+        // if($request->referral_code)
+        // {
+        //     $data_referral = User::where('referral_code',$request->referral_code);
+        //     if(!count($data_referral)){
+        //         return response()->json(['error' => false,'message' => 'Referral Code not Found'],200);
+        //     }
+        // }
         $user->save();
         if(!$user){
             return response()->json(['error' => true, 'message' => 'Registrasi failed !!', 'data' => $user->id],400);
         }
         //Insert to table referal
-        if($request->referral_code)
-        {
-            if(count($data_referral))
-            {
-                $codeInvite = $this->generateCode();
-                $user_id = $data_referral[0]->id;
-                Refellar::create([
-                    'user_id' => $user_id,
-                    'user_id_invite' => $user->id,
-                    'code_voucher' => $codeInvite,
-                    'status' => 0,
-                ]);
+        // if($request->referral_code)
+        // {
+        //     if(count($data_referral))
+        //     {
+        //         $codeInvite = $this->generateCode();
+        //         $user_id = $data_referral[0]->id;
+        //         Refellar::create([
+        //             'user_id' => $user_id,
+        //             'user_id_invite' => $user->id,
+        //             'code_voucher' => $codeInvite,
+        //             'status' => 0,
+        //         ]);
 
-            }
-        }
+        //     }
+        // }
         $nominal_voucer = $_ENV['VOUCHER_NOMINAL_REGISTER'];
         try{
             for($i=0; $i<$_ENV['NUM_GENERATE_VOUCHER_REGISTER']; $i++){
