@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\AUTH;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\BiCheck;
 use App\Models\Refellar;
 use App\Models\User;
@@ -160,7 +161,7 @@ class UserController extends Controller
             'id_card_num' => 'required|unique:users,id_card_num,',
         ]);
         if($validated->fails()){
-            return response()->json(['error' =>true, 'message' => $validated->errors()],400);
+            return response()->json($validated->errors(),400);
         }
         $full_name = strtoupper($request->first_name . " " . $request->last_name);
         $check_data = BiCheck::where('nama','like','%'. $full_name . '%')->get();

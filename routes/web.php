@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\WEB\Auth\AuthController;
+use App\Http\Controllers\WEB\Dashboard\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('login',[AuthController::class,'indexLogin'])->name('login');
+Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');

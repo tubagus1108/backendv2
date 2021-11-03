@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\TrangloRate::class,
+        Commands\BcaRate::class,
     ];
 
     /**
@@ -24,7 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('rate:tranglo')->everyMinute();
+        $schedule->command('rate:bca')->everyMinute();
+        // $schedule->command(command: 'rate:tranglo')->everyMinute();
     }
 
     /**

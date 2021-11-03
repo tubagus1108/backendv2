@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\Cors::class,
         'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
         'check_token' => \App\Http\Middleware\CheckApiToken::class,
+        'web_handle' => \App\Http\Middleware\WebHandle::class,
     ];
 }
