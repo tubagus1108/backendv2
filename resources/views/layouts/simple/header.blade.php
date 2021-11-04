@@ -33,16 +33,19 @@
               <h6 class="f-18 mb-0">Notitications</h6>
             </li>
             <li>
-              <p><i class="fa fa-circle-o mr-3 font-primary"> </i>Delivery processing <span class="pull-right">10 min.</span></p>
+              <p><i class="fa fa-circle-o mr-3 font-primary"> </i>Pending Register <span class="pull-right">10 min.</span></p>
             </li>
             <li>
-              <p><i class="fa fa-circle-o mr-3 font-success"></i>Order Complete<span class="pull-right">1 hr</span></p>
+              <p><i class="fa fa-circle-o mr-3 font-success"></i>Success Transactions<span class="pull-right">1 hr</span></p>
             </li>
             <li>
-              <p><i class="fa fa-circle-o mr-3 font-info"></i>Tickets Generated<span class="pull-right">3 hr</span></p>
+              <p><i class="fa fa-circle-o mr-3 font-info"></i>Pending Transactions<span class="pull-right">3 hr</span></p>
             </li>
             <li>
-              <p><i class="fa fa-circle-o mr-3 font-danger"></i>Delivery Complete<span class="pull-right">6 hr</span></p>
+              <p><i class="fa fa-circle-o mr-3 font-danger"></i>Pending Vendor Order<span class="pull-right">6 hr</span></p>
+            </li>
+            <li>
+              <p><i class="fa fa-circle-o mr-3 font-danger"></i>Processing Vendor Order<span class="pull-right">6 hr</span></p>
             </li>
             <li><a class="btn btn-primary" href="#">Check all notification</a></li>
           </ul>
@@ -57,25 +60,17 @@
           <div class="media profile-media">
             <img class="b-r-10" src="{{asset('assets/images/dashboard/profile.jpg')}}" alt="" />
             <div class="media-body">
-              <span>Emay Walter</span>
-              <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+              <span>{{Auth::user()->first_name}} {{Auth::user()->last_name}}</span>
+              @if (Auth::user()->type_user == 3)
+                <p class="mb-0 font-roboto">Super Admin <i class="middle fa fa-angle-down"></i></p>
+              @else
+                <p class="mb-0 font-roboto">Super Admin <i class="middle fa fa-angle-down"></i></p>
+              @endif
             </div>
           </div>
           <ul class="profile-dropdown onhover-show-div">
             <li>
-              <a href="#"><i data-feather="user"></i><span>Account </span></a>
-            </li>
-            <li>
-              <a href="#"><i data-feather="mail"></i><span>Inbox</span></a>
-            </li>
-            <li>
-              <a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a>
-            </li>
-            <li>
-              <a href="#"><i data-feather="settings"></i><span>Settings</span></a>
-            </li>
-            <li>
-              <a href="#"><i data-feather="log-in"> </i><span>Log in</span></a>
+              <a href="{{route('logout')}}"><i data-feather="log-in"> </i><span>Log out</span></a>
             </li>
           </ul>
         </li>

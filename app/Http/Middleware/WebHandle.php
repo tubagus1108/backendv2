@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WebHandle
 {
@@ -16,10 +17,15 @@ class WebHandle
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->type_user == 3 || auth()->user()->type_user == 4)
+        if(!Auth::check())
         {
-            return $next($request);
+            return redirect()->route('login');
+        }else{
+            if(auth()->user()->type_user == 3 || auth()->user()->type_user == 4)
+            {
+                return $next($request);
+            }
+            return redirect('login')->with('error','User Not Access');
         }
-        return redirect('login')->with('error','User Not Access');
     }
 }

@@ -20,16 +20,22 @@
                width: 150px; height: 150px"><a class="logo" href=""><img class="img-fluid for-light" src="{{ asset('assets/images/adaremit-logo--icon.png') }}"><img class="img-fluid for-dark" src="{{ asset('assets/images/adaremit-logo--icon.png') }}" alt="looginpage"></a></div>
                {{-- <div><img class="img-fluid for-light" src="{{ asset('assets/images/adaremit-logo--icon.png') }}" alt=""></div> --}}
                <div class="login-main">
-                  <form class="theme-form">
+                  <form method="POST"  action="{{route('login-post')}}" class="theme-form">@csrf
+                     @if(session('failed'))
+                     <div class="alert alert-success outline alert-dismissible fade show" role="alert"><i data-feather="thumbs-up"></i>
+                         <p>{{session('failed')}}</p>
+                         <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                     </div>
+                     @endif
                      <h4>Sign in to account</h4>
                      <p>Enter your email & password to login</p>
                      <div class="form-group">
                         <label class="col-form-label">Email Address</label>
-                        <input class="form-control" type="email" required="" placeholder="hello@gmail.com">
+                        <input class="form-control" type="email" name="email" required="" placeholder="hello@gmail.com">
                      </div>
                      <div class="form-group">
                         <label class="col-form-label">Password</label>
-                        <input class="form-control" type="password" name="login[password]" required="" placeholder="*********">
+                        <input class="form-control" type="password" name="password" required="" placeholder="*********">
                         <div class="show-hide"><span class="show">                         </span></div>
                      </div>
                      <div class="form-group mb-0">

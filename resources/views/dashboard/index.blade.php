@@ -11,7 +11,7 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Dashboard</h3>
+<h3>Dashboard {{Auth::user()->first_name}} {{Auth::user()->last_name}}</h3>
 @endsection
 
 @section('breadcrumb-items')

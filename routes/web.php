@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\Auth\AuthController;
 use App\Http\Controllers\WEB\Dashboard\DashboardController;
+use App\Http\Middleware\WebHandle;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,4 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('login',[AuthController::class,'indexLogin'])->name('login');
-Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
+Route::post('login-post',[AuthController::class,'indexPost'])->name('login-post');
+Route::middleware([WebHandle::class],'auth')->group(function(){
+    Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
+    Route::get('logout',[AuthController::class,'LogOut'])->name('logout');
+});
