@@ -64,7 +64,7 @@
               @if (Auth::user()->type_user == 3)
                 <p class="mb-0 font-roboto">Super Admin <i class="middle fa fa-angle-down"></i></p>
               @else
-                <p class="mb-0 font-roboto">Super Admin <i class="middle fa fa-angle-down"></i></p>
+                <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
               @endif
             </div>
           </div>

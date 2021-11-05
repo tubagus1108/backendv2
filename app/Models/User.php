@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,7 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+    protected $appends = [
+        'date_birth_carbon',
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -73,5 +76,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class,'city_id','id');
     }
-
+    public function getDateBirthCarbonAttribute()
+    {
+        return Carbon::parse($this->date_birth)->format('Y-m-d');
+    }
 }

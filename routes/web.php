@@ -6,6 +6,7 @@ use App\Http\Controllers\WEB\Dashboard\DashboardController;
 use App\Http\Controllers\WEB\Transactions\TransactionsController;
 use App\Http\Controllers\WEB\Users\UsersController;
 use App\Http\Middleware\WebHandle;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,10 @@ Route::middleware([WebHandle::class],'auth')->group(function(){
         Route::get('users',[UsersController::class,'indexUsers'])->name('index-users');
         Route::get('users-datatable',[UsersController::class,'UserDatatable'])->name('datatable-users');
         Route::get('/{id}/approve',[UsersController::class,'ApproveUsers']);
+        Route::post('approve/{id}',[UsersController::class,'approve'])->name('approve-user');
+        Route::get('users-pending',[UsersController::class,'pendingUsers'])->name('pending-users');
+        Route::get('user-pending-datatable-admin',[UsersController::class,'pendingDatatableAdmin'])->name('pending-datatable-admin');
+        Route::get('user-pending-datatable-superadmin',[UsersController::class,'pendingDatatableSuperAdmin'])->name('pending-datatable-superadmin');
     });
     // TRANSACTIONS
     Route::get('transactions',[TransactionsController::class,'indexTransactions'])->name('index-transactions');

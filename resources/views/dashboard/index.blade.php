@@ -43,7 +43,7 @@
 						<div class="ecommerce-widgets media">
 							<div class="media-body">
 							<p style="font-size: 20px" class="f-w-500 font-roboto">Success Transactions</p>
-							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$users}}</span></h4>
+							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$success_transactions}}</span></h4>
 							</div>
 							<div class="ecommerce-box light-bg-primary"><i class="mdi mdi-format-list-checks"></i></div>
 						</div>
@@ -54,13 +54,13 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-3 col-sm-12">
-			<a href="">
+			<a href="{{route('pending-users')}}">
 				<div class="card o-hidden">
 					<div class="card-body">
 						<div class="ecommerce-widgets media">
 							<div class="media-body">
 							<p style="font-size: 18px" class="f-w-500 font-roboto">Pending Register</p>
-							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$users}}</span></h4>
+							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$pending_register}}</span></h4>
 							</div>
 							<div class="ecommerce-box light-bg-primary"><i class="mdi mdi-account-clock"></i></div>
 						</div>
@@ -75,7 +75,7 @@
 						<div class="ecommerce-widgets media">
 							<div class="media-body">
 							<p style="font-size: 18px" class="f-w-500 font-roboto">Pending Transactions</p>
-							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$users}}</span></h4>
+							<h4 class="f-w-500 mb-0 f-26"><span class="counter">0</span></h4>
 							</div>
 							<div class="ecommerce-box light-bg-primary"><i class="mdi mdi-cart-arrow-up"></i></div>
 						</div>
@@ -90,7 +90,7 @@
 						<div class="ecommerce-widgets media">
 							<div class="media-body">
 							<p style="font-size: 18px" class="f-w-500 font-roboto">Pending Vendor Orders</p>
-							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$users}}</span></h4>
+							<h4 class="f-w-500 mb-0 f-26"><span class="counter">0</span></h4>
 							</div>
 							<div class="ecommerce-box light-bg-primary"><i class="mdi mdi-cart-arrow-down"></i></div>
 						</div>
@@ -105,7 +105,7 @@
 						<div class="ecommerce-widgets media">
 							<div class="media-body">
 							<p style="font-size: 18px" class="f-w-500 font-roboto">Processing Vendor Order</p>
-							<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{$users}}</span></h4>
+							<h4 class="f-w-500 mb-0 f-26"><span class="counter">0</span></h4>
 							</div>
 							<div class="ecommerce-box light-bg-primary"><i class="mdi mdi-cart-arrow-right"></i></div>
 						</div>

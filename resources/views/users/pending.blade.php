@@ -1,5 +1,5 @@
 @extends('layouts.simple.master')
-@section('title', 'Users')
+@section('title', 'Approve User')
 
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
@@ -10,13 +10,12 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Users</h3>
+<h3>Users Pending</h3>
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Users</li>
+<li class="breadcrumb-item">Users Pending</li>
 @endsection
-
 @section('content')
 <div class="container-fluid">
 	<div class="row">
@@ -43,12 +42,10 @@
 									<th>Type</th>
 									<th>Status BI</th>
 									<th>Email</th>
-									<th>KTP</th>
 									<th>Status Admin</th>
 									<th>Admin Approve</th>
 									<th>Status</th>
 									<th>Action</th>
-									{{-- <th>Recipient</th> --}}
 								</tr>
 							</thead>
 						</table>
@@ -61,10 +58,7 @@
 									<th>Type</th>
 									<th>Status BI</th>
 									<th>Email</th>
-									<th>KTP</th>
-									<th>Status Admin</th>
 									<th>Action</th>
-									{{-- <th>Recipient</th> --}}
 								</tr>
 							</thead>
 						</table>
@@ -77,19 +71,17 @@
 	</div>
 </div>
 @endsection
-
 @section('script')
-<script>
-	$(function(){
+    <script>
+        $(function(){
 		$('#data-superadmin').DataTable({
-			ajax: '{{route('datatable-users')}}',
+			ajax: '{{route('pending-datatable-superadmin')}}',
 			columns: [
 				{ data: 'id', name: 'id' },
 				{ data: 'name', name: 'name'},
 				{ data: 'type', name: 'type'},
 				{ data: 'status_bi_check', name: 'status_bi_check'},
 				{ data: 'email', name: 'email'},
-				{ data: 'id_card_num', name: 'id_card_num'},
 				{ data: 'approve_1', name: 'approve_1'},
 				{ data: 'admin', name: 'admin'},
 				{ data: 'user_status', name: 'user_status'},
@@ -97,20 +89,18 @@
 			],
 		})
 		$('#data-admin').DataTable({
-			ajax: '{{route('datatable-users')}}',
+			ajax: '{{route('pending-datatable-admin')}}',
 			columns: [
-				{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
+				{ data: 'id', name: 'id' },
 				{ data: 'name', name: 'name'},
 				{ data: 'type', name: 'type'},
 				{ data: 'status_bi_check', name: 'status_bi_check'},
 				{ data: 'email', name: 'email'},
-				{ data: 'id_card_num', name: 'id_card_num'},
-				{ data: 'approve_1', name: 'approve_1'},
 				{ data: 'action', name: 'action'},
 			],
 		})
 	})
-</script>
+    </script>
 <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script>
 <script src="{{asset('assets/js/datepicker/daterange-picker/moment.min.js')}}"></script>
