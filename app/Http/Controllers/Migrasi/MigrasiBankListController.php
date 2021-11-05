@@ -17,8 +17,8 @@ class MigrasiBankListController extends Controller
     public function migrasiBankList()
     {
 
-        $oldBankList = MigrasiBankList::where('curr_id','SG')->where('t_service','Bank Deposit')->get();
-        // return $oldBankList;
+        $oldBankList = MigrasiBankList::where('curr_id','SGD')->where('t_service','Bank Deposit')->get();
+        return $oldBankList;
         foreach($oldBankList as $item)
         {
             $currency = Currency::where('int_name','SG')->get();

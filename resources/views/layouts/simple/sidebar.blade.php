@@ -5,14 +5,14 @@
       <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i></div>
    </div>
    <div class="logo-icon-wrapper">
-      <a href=""><img class="img-fluid" src="{{asset('assets/images/logo/logo-icon.png')}}" alt="" /></a>
+      <a href="{{route('dashboard')}}"><img class="img-fluid" src="{{asset('assets/images/logo/logo-icon.png')}}" alt="" /></a>
    </div>
    <nav class="sidebar-main">
       <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
       <div id="sidebar-menu">
          <ul class="sidebar-links custom-scrollbar">
             <li class="back-btn">
-               <a href=""><img class="img-fluid" src="{{asset('assets/images/logo/logo-icon.png')}}" alt="" /></a>
+               <a href="{{route('dashboard')}}"><img class="img-fluid" src="{{asset('assets/images/logo/logo-icon.png')}}" alt="" /></a>
                <div class="mobile-back text-right"><span>Back</span><i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
             </li>
             <li class="sidebar-list">
@@ -27,18 +27,6 @@
             <li class="sidebar-list">
                <a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='users' ? 'active' : '' }}" href=""><i data-feather="briefcase"> </i><span>Vendor Orders</span></a>
             </li>
-            
-            <li class="sidebar-list">
-               <a class="sidebar-link sidebar-title {{request()->route()->getPrefix() == '/vendor-send' ? 'active' : '' }}" href="#">
-                  <i data-feather="send"></i><span>Vendor Send</span>
-                  <div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/ecommerce' ? 'down' : 'right' }}"></i></div>
-               </a>
-               <ul class="sidebar-submenu" style="display: {{request()->route()->getPrefix() == '/vendor-send' ? 'block' : 'none;' }};">
-                     <li><a href="" class="{{ Route::currentRouteName()=='order' ? 'active' : '' }}">Order</a></li>
-                     <li><a href=""" class="{{ Route::currentRouteName()=='status' ? 'active' : '' }}">Status</a></li>
-               </ul>
-            </li>
-
             <li class="sidebar-list">
                <a class="sidebar-link sidebar-title {{request()->route()->getPrefix() == '/order-manual' ? 'active' : '' }}" href="#">
                   <i data-feather="shopping-cart"></i><span>Order Manual</span>

@@ -84,7 +84,7 @@
 		$('#data-superadmin').DataTable({
 			ajax: '{{route('datatable-users')}}',
 			columns: [
-				{ data: 'id', name: 'id' },
+				{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
 				{ data: 'name', name: 'name'},
 				{ data: 'type', name: 'type'},
 				{ data: 'status_bi_check', name: 'status_bi_check'},

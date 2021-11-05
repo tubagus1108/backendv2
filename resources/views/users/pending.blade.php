@@ -77,7 +77,7 @@
 		$('#data-superadmin').DataTable({
 			ajax: '{{route('pending-datatable-superadmin')}}',
 			columns: [
-				{ data: 'id', name: 'id' },
+				{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
 				{ data: 'name', name: 'name'},
 				{ data: 'type', name: 'type'},
 				{ data: 'status_bi_check', name: 'status_bi_check'},
@@ -91,7 +91,7 @@
 		$('#data-admin').DataTable({
 			ajax: '{{route('pending-datatable-admin')}}',
 			columns: [
-				{ data: 'id', name: 'id' },
+				{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
 				{ data: 'name', name: 'name'},
 				{ data: 'type', name: 'type'},
 				{ data: 'status_bi_check', name: 'status_bi_check'},
