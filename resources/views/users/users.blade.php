@@ -24,13 +24,6 @@
 		<div class="col-sm-12">
 			<div class="card">
 				<div class="card-header">
-					{{-- <div class="col-lg-5">
-						<div class="theme-form">
-							<div class="form-group">
-								<input class="form-control digits" type="text" name="daterange" value="01/15/2021 - 02/15/2021">
-							</div>
-						</div>
-					</div> --}}
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">

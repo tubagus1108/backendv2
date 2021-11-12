@@ -6,7 +6,9 @@ use App\Http\Controllers\WEB\Dashboard\DashboardController;
 use App\Http\Controllers\WEB\Transactions\TransactionsController;
 use App\Http\Controllers\WEB\Users\UsersController;
 use App\Http\Middleware\WebHandle;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,12 @@ use Illuminate\Support\Facades\Auth;
 // });
 Route::get('login',[AuthController::class,'indexLogin'])->name('login');
 Route::post('login-post',[AuthController::class,'indexPost'])->name('login-post');
+Route::get('sitemap',function(){
+    $sitemap = App::make("sitemap");
+    $sitemap->add('https://adaremit.co.id/signup', '2012-08-25T20:10:00+02:00', '1.0', 'daily');
+    $sitemap->add('https://adaremit.co.id/login', '2012-08-25T20:10:00+02:00', '1.0', 'daily');
+    return $sitemap->render('xml');
+});
 Route::middleware([WebHandle::class],'auth')->group(function(){
     // DASHBOARD
     Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
@@ -38,7 +46,15 @@ Route::middleware([WebHandle::class],'auth')->group(function(){
         Route::get('user-pending-datatable-superadmin',[UsersController::class,'pendingDatatableSuperAdmin'])->name('pending-datatable-superadmin');
     });
     // TRANSACTIONS
-    Route::get('transactions',[TransactionsController::class,'indexTransactions'])->name('index-transactions');
+    Route::prefix('transactions')->group(function(){
+        Route::get('transactions-all',[TransactionsController::class,'TransactionsAll'])->name('transactions-all');
+        Route::get('/{id}/detail',[TransactionsController::class,'DetailTransactions'])->name('detail-transactions');
+        Route::get('admin-transactions-datatable',[TransactionsController::class,'ListDatatableTransaction'])->name('admin-transactions-datatable');
+        Route::get('transactions-pending',[TransactionsController::class,'TransactionsPending'])->name('transactions-pending');
+        Route::get('pending-datatable-admin',[TransactionsController::class,'pendingDatatableAdmin'])->name('transaction-admin-datatable');
+        Route::get('pending-datatable-superadmin',[TransactionsController::class,'pendingDatatableSuperadmin'])->name('transaction-superadmin-datatable');
+        Route::get('{id}/approve-transactions',[TransactionsController::class,'ApproveTransaction'])->name('approve-transactions');
+    });
     // VENDOR
     //MANUAL
     //REPORTS

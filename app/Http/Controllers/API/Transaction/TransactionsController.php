@@ -83,22 +83,22 @@ class TransactionsController extends Controller
             $acc_name_ready = ucwords($check_receipt[0]->first_name . " " . $check_receipt[0]->last_name);
         }
         $check_receipt_new = Receipt::where('id',$create_new_receipt->id)->with('vendor_relation')->get();
-        $check_voucher_where = Voucher::firstWhere('id',$request->voucher_id);
-        if($check_voucher_where->type == NULL)
-        {
-            $check_voucher = Voucher::find($request->voucher_id);
-            $check_voucher->code_voucher = $check_voucher_where->code_voucher;
-            $check_voucher->value = $check_voucher_where->value;
-            $check_voucher->status = 1;
-            $check_voucher->type = 1;
-            $check_voucher->user_id = Auth::guard('api-user')->user()->id;
-            $check_voucher->created_at = Carbon::now('Asia/Jakarta');
-            $check_voucher->save();
-        }else{
-            Voucher::updated([
-                'status' => 1,
-            ]);
-        }
+        // $check_voucher_where = Voucher::firstWhere('id',$request->voucher_id);
+        // if($check_voucher_where->type == NULL)
+        // {
+        //     $check_voucher = Voucher::find($request->voucher_id);
+        //     $check_voucher->code_voucher = $check_voucher_where->code_voucher;
+        //     $check_voucher->value = $check_voucher_where->value;
+        //     $check_voucher->status = 1;
+        //     $check_voucher->type = 1;
+        //     $check_voucher->user_id = Auth::guard('api-user')->user()->id;
+        //     $check_voucher->created_at = Carbon::now('Asia/Jakarta');
+        //     $check_voucher->save();
+        // }else{
+        //     Voucher::updated([
+        //         'status' => 1,
+        //     ]);
+        // }
         $status_trx = "Waiting for Payment";
         $status_trx_admin = "Pending";
         $transaction = new Transaction();
@@ -126,7 +126,7 @@ class TransactionsController extends Controller
         $transaction->status_vendor = $request->status_vendor;
         $transaction->bank_id = $request->bank_id;
         $transaction->countdown_date = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
-        $transaction->voucher_id = (isset($request->voucher_id)) ? $check_voucher->id : 0;
+        // $transaction->voucher_id = (isset($request->svoucher_id)) ? $check_voucher->id : 0;
         $transaction->user_id = $data[0]->id;
         $transaction->approve_at_1 = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
         $transaction->approve_at_2 = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');

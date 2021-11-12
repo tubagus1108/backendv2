@@ -22,7 +22,7 @@
                <a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='users' ? 'active' : '' }}" href="{{route('index-users')}}"><i data-feather="users"> </i><span>Users</span></a>
             </li>
             <li class="sidebar-list">
-               <a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='users' ? 'active' : '' }}" href=""><i data-feather="shopping-cart"> </i><span>Transactions</span></a>
+               <a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='users' ? 'active' : '' }}" href="{{route('transactions-all')}}"><i data-feather="shopping-cart"> </i><span>Transactions</span></a>
             </li>
             <li class="sidebar-list">
                <a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='users' ? 'active' : '' }}" href=""><i data-feather="briefcase"> </i><span>Vendor Orders</span></a>

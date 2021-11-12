@@ -12,6 +12,7 @@
         "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "laravelium/sitemap": " 8.*",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

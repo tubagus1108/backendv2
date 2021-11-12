@@ -58,21 +58,42 @@ class UsersController extends Controller
     public function approve(Request $request,$id)
     {
         $approve = $request->input('approve');
+        $rejected = $request->input('reject');
         if(Auth::user()->type_user == 4)
         {
-            User::where('id',$id)->update([
-                'approve_1' => $approve,
-                'admin_approve_1' => Auth::user()->id,
-                'approvedate_1' => Carbon::now('Asia/Jakarta'),
-            ]);
+            if($approve)
+            {
+                User::where('id',$id)->update([
+                    'approve_1' => $approve,
+                    'admin_approve_1' => Auth::user()->id,
+                    'approvedate_1' => Carbon::now('Asia/Jakarta'),
+                ]);
+            }else{
+                User::where('id',$id)->update([
+                    'approve_1' => $rejected,
+                    'admin_approve_1' => Auth::user()->id,
+                    'approvedate_1' => Carbon::now('Asia/Jakarta'),
+                ]);
+            }
             return redirect()->route('index-users');
         }else{
-            User::where('id',$id)->update([
-                'approve_2' => $approve,
-                'admin_approve_2' => Auth::user()->id,
-                'approvedate_2' => Carbon::now('Asia/Jakarta'),
-                'user_status' => 'Verification passed',
-            ]);
+            if($approve)
+            {
+                User::where('id',$id)->update([
+                    'approve_2' => $approve,
+                    'admin_approve_2' => Auth::user()->id,
+                    'approvedate_2' => Carbon::now('Asia/Jakarta'),
+                    'user_status' => 'Verification passed',
+                ]);
+            }else{
+                User::where('id',$id)->update([
+                    'approve_2' => $rejected,
+                    'admin_approve_2' => Auth::user()->id,
+                    'approvedate_2' => Carbon::now('Asia/Jakarta'),
+                    'user_status' => 'Your ID Verification Rejected please contact customer service',
+                ]);
+                
+            }
             return redirect()->route('index-users');
         }
     }

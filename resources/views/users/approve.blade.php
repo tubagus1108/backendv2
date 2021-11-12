@@ -296,11 +296,11 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-lg-12">
                             <form method="POST" action="{{url('users/approve/'.$data['id'].'')}}">@csrf
                                 <div class="row">
-                                    <input type="radio" class="btn-check" name="approve" id="option1" value="Reject" autocomplete="off">
+                                    <input type="radio" class="btn-check" name="reject" id="option1" value="Reject" autocomplete="off">
                                     <label class="btn btn-danger" for="option1">Reject</label>
                                     <input type="radio" class="btn-check" name="approve" id="option2" value="Approve" autocomplete="off">
                                     <label class="btn btn-primary" for="option2">Approve</label>
@@ -310,7 +310,33 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
+                    <form action="">
+                        <div class="row mt-3">
+                            <div class="col-lg-4">
+                                <p style="font-size: 1rem" class="text-left font-weight-bold">Approval:</p>
+                            </div>
+                            <div class="col-lg-5">
+                            @if ($data['user_status'] == 'Verification passed')
+                                <input type="radio" class="btn-check" name="reject" id="option1" value="Reject" autocomplete="off">
+                                <label class="btn btn-danger" for="option1">Reject</label>
+                                <input type="radio" class="btn-check" name="approve" id="option2" value="Approve" autocomplete="off">
+                                <label class="btn btn-primary" for="option2">Approve</label>
+                            @else
+                                <input type="radio" class="btn-check" name="reject" id="option1" value="Reject" autocomplete="off">
+                                <label class="btn btn-danger" for="option1">Reject</label>
+                                <input type="radio" class="btn-check" name="approve" id="option2" value="Approve" autocomplete="off">
+                                <label class="btn btn-primary" for="option2">Approve</label>    
+                            @endif
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <a class="btn btn-outline-light" href="{{route('transactions-all')}}" role="button"><i class="fa fa-step-backward"></i> Back</a>
+                                <button class="button btn btn-outline-primary">Sumbit</button>
+                            </div>     
+                        </div>
+                        </form>
                 </div>
             </div>
         </div>
@@ -319,6 +345,24 @@
 
 @endsection
 @section('script')
+<script>
+    let input = document.querySelector("#option1");
+    let input2 = document.querySelector("#option2");
+    let button = document.querySelector("button");
+    button.disabled = true;
+    input.addEventListener("change", stateHandle);
+    input2.addEventListener("change", stateHandle);
+    function stateHandle() {
+        if(document.querySelector(".input").value === "") {
+            button.disabled = true;
+        }else if(document.querySelector("#option2").value === ""){
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
+    }
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 @endsection

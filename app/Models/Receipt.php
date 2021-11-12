@@ -10,7 +10,7 @@ class Receipt extends Model
     use HasFactory;
     protected $table = 'receipt';
     protected $guarded = [];
-    protected $appends = ['currency','currency_to'];
+    protected $appends = ['currency','currency_to','country_to'];
 
     public function vendor_relation()
     {
@@ -22,6 +22,15 @@ class Receipt extends Model
         if($this->vendor_relation){
             $tableCurrencyGetData = Currency::where('id',$this->vendor_relation->id_currency_to)->first();
             $resault = $tableCurrencyGetData['curr_code'];
+        }
+        return $resault;
+    }
+    public function getCountryToAttribute()
+    {
+        $resault = "Country tidak ditemukan";
+        if($this->vendor_relation){
+            $tableCurrencyGetData = Currency::where('id',$this->vendor_relation->id_currency_to)->first();
+            $resault = $tableCurrencyGetData['negara'];
         }
         return $resault;
     }
