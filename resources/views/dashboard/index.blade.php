@@ -37,7 +37,7 @@
 			</a>
 		</div>
 		<div class="col-lg-6 col-sm-12">
-			<a href="">
+			<a href="{{route('transactions-success')}}">
 				<div class="card o-hidden">
 					<div class="card-body">
 						<div class="ecommerce-widgets media">

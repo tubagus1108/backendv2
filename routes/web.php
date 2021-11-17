@@ -51,8 +51,11 @@ Route::middleware([WebHandle::class],'auth')->group(function(){
         Route::get('/{id}/detail',[TransactionsController::class,'DetailTransactions'])->name('detail-transactions');
         Route::get('admin-transactions-datatable',[TransactionsController::class,'ListDatatableTransaction'])->name('admin-transactions-datatable');
         Route::get('transactions-pending',[TransactionsController::class,'TransactionsPending'])->name('transactions-pending');
+        Route::get('transactions-success',[TransactionsController::class,'TransactionsSuccess'])->name('transactions-success');
         Route::get('pending-datatable-admin',[TransactionsController::class,'pendingDatatableAdmin'])->name('transaction-admin-datatable');
         Route::get('pending-datatable-superadmin',[TransactionsController::class,'pendingDatatableSuperadmin'])->name('transaction-superadmin-datatable');
+        Route::get('success-datatable-admin',[TransactionsController::class,'successatatableAdmin'])->name('transaction-success-admin-datatable');
+        Route::get('success-datatable-superadmin',[TransactionsController::class,'successDatatableSuperadmin'])->name('transaction-success-superadmin-datatable');
         Route::get('{id}/approve-transactions',[TransactionsController::class,'ApproveTransaction'])->name('approve-transactions');
     });
     // VENDOR

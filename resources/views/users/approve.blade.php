@@ -311,32 +311,34 @@
                             </form>
                         </div>
                     </div> --}}
-                    <form action="">
+                    <form method="POST" action="{{url('users/approve/'.$data['id'].'')}}">@csrf
                         <div class="row mt-3">
                             <div class="col-lg-4">
                                 <p style="font-size: 1rem" class="text-left font-weight-bold">Approval:</p>
                             </div>
                             <div class="col-lg-5">
-                            @if ($data['user_status'] == 'Verification passed')
-                                <input type="radio" class="btn-check" name="reject" id="option1" value="Reject" autocomplete="off">
-                                <label class="btn btn-danger" for="option1">Reject</label>
-                                <input type="radio" class="btn-check" name="approve" id="option2" value="Approve" autocomplete="off">
-                                <label class="btn btn-primary" for="option2">Approve</label>
-                            @else
-                                <input type="radio" class="btn-check" name="reject" id="option1" value="Reject" autocomplete="off">
-                                <label class="btn btn-danger" for="option1">Reject</label>
-                                <input type="radio" class="btn-check" name="approve" id="option2" value="Approve" autocomplete="off">
-                                <label class="btn btn-primary" for="option2">Approve</label>    
-                            @endif
+                                <input type="radio"class="btn-check input" name="approve" id="option1" value="Reject" autocomplete="off">
+                                <label class="btn btn-danger" for="option1"><i class="fa fa-times"></i> Reject</label>
+                                <input type="radio" class="btn-check input" name="approve" id="option2" value="Approve" autocomplete="off">
+                                <label class="btn btn-success" for="option2"><i class="fa fa-check"></i> Approve</label>   
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                <label style="font-size: 1rem" class="text-left font-weight-bold" class="form-label" for="exampleFormControlTextarea4">Remarks</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea4" rows="3"></textarea>
+                                </div>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col">
-                                <a class="btn btn-outline-light" href="{{route('transactions-all')}}" role="button"><i class="fa fa-step-backward"></i> Back</a>
+                                <a class="btn btn-outline-light" href="{{route('index-users')}}" role="button"><i class="fa fa-step-backward"></i> Back</a>
                                 <button class="button btn btn-outline-primary">Sumbit</button>
-                            </div>     
+                            </div>
+                            
                         </div>
-                        </form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -346,7 +348,7 @@
 @endsection
 @section('script')
 <script>
-    let input = document.querySelector("#option1");
+     let input = document.querySelector("#option1");
     let input2 = document.querySelector("#option2");
     let button = document.querySelector("button");
     button.disabled = true;
